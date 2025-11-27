@@ -1,22 +1,19 @@
-﻿using System.Text.Json.Serialization;
-
-namespace Blog.API.Models
+﻿namespace Blog.API.Models
 {
-    public class Category
+    public class Tag
     {
         public int Id { get; private set; }
         public string Name { get; private set; }
         public string Slug { get; private set; }
-
-        public Category(string name, string slug)
+        public Tag(string name, string slug)
         {
             Name = name;
             Slug = slug;
         }
 
-        public Category()
+        public Tag()
         {
-            
+
         }
     }
 }

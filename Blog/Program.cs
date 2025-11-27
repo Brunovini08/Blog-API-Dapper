@@ -10,6 +10,16 @@ builder.Services.AddControllers();
 builder.Services.AddSingleton<ConnectionDB>();
 builder.Services.AddSingleton<CategoryRepository>();
 builder.Services.AddSingleton<CategoryService>();
+
+builder.Services.AddSingleton<RoleRepository>();
+builder.Services.AddSingleton<RoleService>();
+
+builder.Services.AddSingleton<TagRepository>();
+builder.Services.AddSingleton<TagService>();
+
+builder.Services.AddSingleton<UserRepository>();
+builder.Services.AddSingleton<UserService>();
+
 // Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
 builder.Services.AddOpenApi();
 

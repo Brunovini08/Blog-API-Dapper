@@ -2,16 +2,13 @@
 using Blog.API.Models;
 using Blog.API.Models.DTOs.Category;
 using Blog.API.Services;
-using Dapper;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Data.SqlClient;
-using Microsoft.Identity.Client;
-using System.Threading.Tasks;
+
 namespace Blog.API.Controllers
 {
     [ApiController]
     [Route("api/[controller]")]
-    public class CategoryController : Controller
+    public class CategoryController : ControllerBase
     {
         private CategoryService _categoryService;
         public CategoryController(CategoryService categoryService)
@@ -26,6 +23,8 @@ namespace Blog.API.Controllers
            try
             {
                 var categories = await _categoryService.GetAllCategoriesAsync();
+                if(categories is null)
+                    return NotFound("Nenhuma categoria registrada");
                 return Ok(categories);
             } catch(Exception ex)
             {
@@ -39,6 +38,8 @@ namespace Blog.API.Controllers
            try
             {
                 var category = await _categoryService.GetByIdCategoryAsync(id);
+                if (category is null)
+                    return NotFound("Categoria não encontrada");
                 return Ok(category);
             } catch(Exception ex)
             {
