@@ -7,9 +7,10 @@ namespace Blog.API.Services.Interfaces
     public interface IUserService
     {
         public Task<List<UserResponseDTO>> GetAllUsersAsync();
-        public Task<UserResponseDTO> GetByIdUserAsync(int id);
+        public Task<List<GetAllUsersWithRoleDTO>> GetAllUsersWithRoleAsync();
+        public Task<User> GetByIdUserAsync(int id);
         public Task CreateUserAsync(UserRequestDTO user);
-        public Task UpdateUserAsync(UserRequestDTO user, int id);
+        public Task UpdateUserAsync(UserRequestUpdateDTO user, int id);
         public Task DeleteUserAsync(int id);
     }
 }

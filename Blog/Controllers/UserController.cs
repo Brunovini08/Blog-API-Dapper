@@ -36,10 +36,10 @@ namespace Blog.API.Controllers
         {
             try
             {
-                var users = await _userService.GetAllUsersAsync();
+                var users = await _userService.GetAllUsersWithRoleAsync();
                 if(users is null)
                     return NotFound("Nenhum usuário registrado");
-                return Ok();
+                return Ok(users);
             }catch(Exception ex)
             {
                 throw new Exception(ex.Message);
@@ -51,10 +51,40 @@ namespace Blog.API.Controllers
         {
             try
             {
-                var users = await _userService.GetByIdUserAsync(id);
-                if (users is null)
+                var user = await _userService.GetByIdUserAsync(id);
+                if (user is null)
                     return NotFound("Nenhum usuário registrado");
+                return Ok(user);
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
+        }
+
+        [HttpPut("{id}")]
+        public async Task<ActionResult> UpdateUser([FromBody] UserRequestUpdateDTO user, int id)
+        { 
+            try
+            {
+                
+                await _userService.UpdateUserAsync(user, id);
                 return Ok();
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
+        }
+
+        [HttpDelete("{id}")]
+        public async Task<ActionResult> DeleteUser(int id)
+        {
+            try
+            {
+
+                await _userService.DeleteUserAsync(id);
+                return NoContent();
             }
             catch (Exception ex)
             {

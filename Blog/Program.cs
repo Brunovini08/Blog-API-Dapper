@@ -20,6 +20,8 @@ builder.Services.AddSingleton<TagService>();
 builder.Services.AddSingleton<UserRepository>();
 builder.Services.AddSingleton<UserService>();
 
+builder.Services.AddSingleton<PostRepository>();
+builder.Services.AddSingleton<PostService>();
 // Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
 builder.Services.AddOpenApi();
 

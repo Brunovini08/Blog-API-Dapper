@@ -19,7 +19,7 @@ namespace Blog.API.Services
             try
             {
                 var hashPassword = HashPassword(user.Password);
-                var newUser = new User(user.Name, user.Email, hashPassword, user.Bio, user.Image, user.Name.ToLower().Replace(" ", "-") + new DateOnly());
+                var newUser = new User(user.Name, user.Email, hashPassword, user.Bio, user.Image, user.Name.ToLower().Replace(" ", "-") + "-" + new DateOnly().ToString().Replace("/", "-"));
                 await _userRepository.CreateUserAsync(newUser);
             }
             catch (Exception ex)
@@ -28,9 +28,15 @@ namespace Blog.API.Services
             }
         }
 
-        public Task DeleteUserAsync(int id)
+        public async Task DeleteUserAsync(int id)
         {
-            throw new NotImplementedException();
+           try
+            {
+               await _userRepository.DeleteUserAsync(id);
+            } catch(Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
         }
 
         public async Task<List<UserResponseDTO>> GetAllUsersAsync()
@@ -45,7 +51,7 @@ namespace Blog.API.Services
             }
         }
 
-        public async Task<UserResponseDTO> GetByIdUserAsync(int id)
+        public async Task<User> GetByIdUserAsync(int id)
         {
             try
             {
@@ -57,9 +63,51 @@ namespace Blog.API.Services
             }
         }
 
-        public Task UpdateUserAsync(UserRequestDTO user, int id)
+        public async Task UpdateUserAsync(UserRequestUpdateDTO user, int id)
         {
-            throw new NotImplementedException();
+            try
+            {
+                var userStorage = await this.GetByIdUserAsync(id);
+                if (userStorage is null)
+                    throw new Exception("Usuário não encontrado");
+                if(user.Name != null)
+                {
+                    userStorage.setName(user.Name);
+                    userStorage.setSlug(user.Name.ToLower().Replace(" ", "-") + "-" + new DateOnly().ToString().Replace("/", "-"));
+                } 
+                if(user.Image != null)
+                {
+                    userStorage.setImage(user.Image);
+                }
+                if(user.Email != null)
+                {
+                    userStorage.setEmail(user.Email);
+                }
+                if(user.Password != null)
+                {
+                    userStorage.setPasswordHash(HashPassword(user.Password));
+                }
+                if(user.Bio != null)
+                {
+                    userStorage.setBio(user.Bio);
+                }
+
+               await _userRepository.UpdateUserAsync(userStorage, id);
+            } catch(Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
+        }
+
+        public async Task<List<GetAllUsersWithRoleDTO>> GetAllUsersWithRoleAsync()
+        {
+            try
+            {
+                return await _userRepository.GetAllUsersWithRoleAsync();
+            } catch(Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
         }
     }
 }
